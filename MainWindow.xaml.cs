@@ -1,4 +1,5 @@
 ﻿using SolarPark.DrawSolarPark;
+using SolarPark.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,38 +27,28 @@ namespace SolarPark
     {
         public MainWindow()
         {
+            _viewModel = (InputViewModel)DataContext;
+
             InitializeComponent();
             Initiliaze_Or_Clear_Canvas();
 
-
         }
 
-        private int PanelWidth { get; set; }
-        private int PanelLength { get; set; }
-        private int RowSpacing { get; set; }
-        private int ColumnSpacing { get; set; }
-        private int TiltAngle { get; set; }
-
-        private const int DegreeLimit = 60;
-
+        InputViewModel _viewModel;
         public Path solarParkShape { get; set; }
         public Path restrictionParkShape { get; set; }
 
         private void Button_Click_Send_Data(object sender, RoutedEventArgs e)
         {
-            PanelWidth = Int32.Parse(WidthInput.Text);
-            PanelLength = Int32.Parse(LengthInput.Text);
-            RowSpacing = Int32.Parse(RowSpacingInput.Text);
-            ColumnSpacing = Int32.Parse(ColumnSpacingInput.Text);
-            TiltAngle = Int32.Parse(TiltAngleInput.Text);
+            _viewModel = (InputViewModel)DataContext;
 
             var panel = new Rectangle();
-            panel.Width = PanelLength;
-            panel.Height = PanelWidth;
+            panel.Width = _viewModel.PanelLength;
+            panel.Height = _viewModel.PanelWidth;
 
-            var listOfPanels = DrawPark.Draw_Panels_On_Park(SolarParkCanvas, solarParkShape, restrictionParkShape, panel, ColumnSpacing, RowSpacing, TiltAngle);
+            var listOfPanels = DrawPark.Draw_Panels_On_Park(SolarParkCanvas, solarParkShape, restrictionParkShape, panel, _viewModel.ColumnSpacing, _viewModel.RowSpacing, _viewModel.TiltAngle);
 
-            TestLabel.Content = $"Generated panels: {listOfPanels.Count}"; 
+            TestLabel.Content = $"Generated panels: {listOfPanels.Count}";
         }
 
         private void Button_Click_Clear_Canvas(object sender, RoutedEventArgs e)
@@ -83,5 +74,10 @@ namespace SolarPark
             e.Handled = regex.IsMatch(e.Text);
         }
 
+        private void TiltAngle_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            TextBox tiltAngleInput = sender as TextBox;
+            GenerateButton.IsEnabled = !string.IsNullOrEmpty(tiltAngleInput.Text) ? (int.Parse(tiltAngleInput.Text) <= 60) : false;
+        }
     }
 }

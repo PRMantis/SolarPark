@@ -3,9 +3,13 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:SolarPark"
+        xmlns:local1="clr-namespace:SolarPark.ViewModel"
         mc:Ignorable="d"
         Title="MainWindow" Height="672" Width="1138">
+    <Window.DataContext>
+        <local1:InputViewModel />
+    </Window.DataContext>
+    
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="284*"/>
@@ -15,19 +19,21 @@
         <Button x:Name="GenerateButton" Content="Generate" HorizontalAlignment="Center" Margin="0,514,0,0" VerticalAlignment="Top" Height="28" Width="174" Click="Button_Click_Send_Data"/>
         <ListBox Margin="10,10,1,328">
             <TextBlock TextWrapping="Wrap"><Run Language="en-gb" Text="Width"/></TextBlock>
-            <TextBox x:Name="WidthInput" TextWrapping="Wrap" Width="120" PreviewTextInput="LimitInputToNumbers"/>
+            <TextBox x:Name="WidthInput" Text="{Binding PanelWidth}" TextWrapping="Wrap" Width="120" PreviewTextInput="LimitInputToNumbers"/>
             <Separator/>
             <TextBlock TextWrapping="Wrap"><Run Language="en-gb" Text="Length"/></TextBlock>
-            <TextBox x:Name="LengthInput" TextWrapping="Wrap" Width="120" PreviewTextInput="LimitInputToNumbers"/>
+            <TextBox x:Name="LengthInput" Text="{Binding PanelLength}" TextWrapping="Wrap" Width="120" PreviewTextInput="LimitInputToNumbers"/>
             <Separator/>
             <TextBlock TextWrapping="Wrap"><Run Language="en-gb" Text="RowSpacing"/></TextBlock>
-            <TextBox x:Name="RowSpacingInput" TextWrapping="Wrap" Width="120" PreviewTextInput="LimitInputToNumbers"/>
+            <TextBox x:Name="RowSpacingInput" Text="{Binding RowSpacing}" TextWrapping="Wrap" Width="120" PreviewTextInput="LimitInputToNumbers"/>
             <Separator/>
             <TextBlock TextWrapping="Wrap"><Run Language="en-gb" Text="ColumnSpacing"/></TextBlock>
-            <TextBox x:Name="ColumnSpacingInput" TextWrapping="Wrap" Width="120" PreviewTextInput="LimitInputToNumbers"/>
+            <TextBox x:Name="ColumnSpacingInput" Text="{Binding ColumnSpacing}" TextWrapping="Wrap" Width="120" PreviewTextInput="LimitInputToNumbers"/>
             <Separator/>
             <TextBlock TextWrapping="Wrap" Width="120"><Run Language="en-gb" Text="TiltAngle"/><LineBreak/><Run Language="en-gb"/></TextBlock>
-            <TextBox x:Name="TiltAngleInput" TextWrapping="Wrap" Width="120" PreviewTextInput="LimitInputToNumbers"/>
+            <TextBox TextChanged="TiltAngle_TextChanged" x:Name="TiltAngleInput" Text="{Binding TiltAngle}" TextWrapping="Wrap" Width="120" PreviewTextInput="LimitInputToNumbers">
+            </TextBox>
+
             <Separator/>
         </ListBox>
         <Viewbox Stretch="Uniform" Grid.Column="2" Margin="10,0,10,0" Width="1000" Height="1000">
